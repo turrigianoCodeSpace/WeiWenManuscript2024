@@ -16,25 +16,25 @@ save_results = 1;
 
 %experiment name (correpsonding to the sheet name in the cell_id_index
 % excel file)
-exp_name = 'WT_CP_48saline_24CNO_pooled';
+exp_name = 'WT_Ex_Dark_CPP_Saline_IE';
 
 %file name
-saved_file_name = 'chronic_hm4di_fI_saline_pooled_ctrl.mat';
+saved_file_name = 'fI_WT_Ex_Dark_CPP_Saline_IE.mat';
 
 %where to save grouped files
 fp_grouped_data = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/chronic_DREADDs/chronic_hm4di/fI_data_by_groups';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/fI_data_by_groups';
 
 %experimental conditions
-exp_con = {'DR_CNO_saline','CNO_saline'};
+exp_con = {'CPP_Dark_6h','Saline_Dark_6h'};
 
 %import cell_id_index table 
-cd('/Users/wwneuro/My_Drive/Lab/Data_analysis/chronic_DREADDs/chronic_hm4di/fI_data_by_groups')
+cd('/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/fI_data_by_groups')
 cell_id_index = readtable('cell_id_index.xlsx','Sheet',exp_name);
 
 %location of analyzed fI results
 fp_analyzed_fI = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/chronic_DREADDs/chronic_hm4di/analyzed_fI_results';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_fI_results';
 
 %% extract and group data
 data_struct_temp = cell(1,numel(exp_con));
@@ -89,7 +89,7 @@ for fi = 1:file_num
                     ti_end = cell_id{1,ci}(trace_ct,1);
                     
                     data_struct_temp{cond_i}.MFR(1:trace_ct,cell_ID) = MFR{1,ci}(ti_start:ti_end,1);                 
-                    data_struct_temp{cond_i}.IFR(1:trace_ct,cell_ID) = IFR{1,ci}(ti_start:ti_end,1);
+                    data_struct_temp{cond_i}.IFR(1:trace_ct,cell_ID) = IFR_2_ave{1,ci}(ti_start:ti_end,1);
                     data_struct_temp{cond_i}.mean_IFR(1:trace_ct,cell_ID) = IFR_ave{1,ci}(ti_start:ti_end,1);
                     data_struct_temp{cond_i}.Threshold(1:trace_ct,cell_ID) = V_th_1st{1,ci}(ti_start:ti_end,1);
                     data_struct_temp{cond_i}.ADP_ind(1:trace_ct,cell_ID) = adp_index{1,ci}(ti_start:ti_end,1);
@@ -128,9 +128,9 @@ end
  
 %%%% CHANGE FOR EACH RUN %%%%
 % 'PhTX_24h','PhTX_TTX_24h','TTX_24h','P_T_NT_Ctrl'
-DR_CNO_saline = data_struct_temp{1,1};
-CNO_saline = data_struct_temp{1,2};
-% TTX_24h = data_struct_temp{1,3};
+CPP_Dark_6h = data_struct_temp{1,1};
+Saline_Dark_6h = data_struct_temp{1,2};
+% Dark_6h = data_struct_temp{1,3};
 % P_T_NT_Ctrl = data_struct_temp{1,4};
 % P_T_NT_Ctrl = data_struct_temp{1,4};
 % Sh_Mu3= data_struct_temp{1,4};

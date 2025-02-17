@@ -17,24 +17,24 @@
 save_results = 1; 
 
 %filepath of fI data files
-fp_fI_data = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/fI/';
+fp_fI_data = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/fI/';
 
 %filepath of rheobase data files
-fp_rheo_data = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/rheobase/';
+fp_rheo_data = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/rheobase/';
 
 %filepath of Vm data files
-fp_vm_data = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/resting_vm/';
+fp_vm_data = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/resting_vm/';
 
 %filepath of analyzed fI data
 fp_fI_analyzed_data = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/analyzed_fI_results';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_fI_results';
 
 %filepath of analyzed seal test data (aka passive properties)
 fp_pp_analyzed_data = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/analyzed_seal_test';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_seal_test';
 
 %experiment(s) (defined as the 6-digit format of the recording date)
-experiment = {'240301'};
+experiment = {'240906'};
 
 %subfolders under a certain experiment if any (e.g. before/after)
 sub = '';
@@ -62,13 +62,13 @@ figure_pp_on = 0;
 
 %%%% parameters for fI/rheobase pulses
 %latency of pulse onset (in s)
-step_start_fI = 1;
+step_start_fI = 0.5;
 
 %duration of the current injection pulse (in s)
-pulse_fI = 0.5;
+pulse_fI = 1;
 
 %current injection step amplitude (in pA)
-curr_inc = 25;
+curr_inc = 20;
 
 %current injection step amplitude for rheobase (in pA)
 curr_inc_rheo = 5;
@@ -80,10 +80,10 @@ curr_inc_rheo = 5;
 %cti_rheo = 5;
 
 %holding potential (in mV)
-v_hold = -60;
+v_hold = -70;
 
 %whether to show individual fI traces during analysis (1 = on, 0 = off)
-figure_fI_on = 0;
+figure_fI_on = 1;
 
 %whether to show individual rheobase traces during analysis
 figure_rheo_on = 0;
@@ -262,6 +262,7 @@ for jj = 1:1%numel(experiment)
     ISI = cell(1,max(cell_num)); %interspike interval (for each two APs)
     IFR = cell(1,max(cell_num)); %instantenous firing rate (for each ISI)
     IFR_ave = cell(1,max(cell_num)); %average of IFRs for all spikes evoked in a single trace
+    IFR_2_ave = cell(1,max(cell_num)); %average of IFRs for the first three spikes
     V_th = cell(1,max(cell_num)); %AP threshold (for each AP)
     V_th_ave = cell(1,max(cell_num)); %average AP threshold
     V_th_1st = cell(1,max(cell_num)); %threshold of the first AP in each trace
@@ -398,7 +399,7 @@ for jj = 1:1%numel(experiment)
                     end
 
                     %IFR (instantaneous firing rate, in Hz))
-                    %calculated as the reciprocal of ISI
+                    %calculated as the reciprocal of ISIs
                     if sp_num_temp == 0 || sp_num_temp == 1
                         IFR{1,ci}(ti,:) = 0;
                     else
@@ -581,7 +582,14 @@ for jj = 1:1%numel(experiment)
                         IFR_ave{1,ci}(ti,1) = mean(nonzeros(IFR{1,ci}(ti,:)),'omitnan');
                     else
                         IFR_ave{1,ci}(ti,1) = 0;
-                    end                  
+                    end
+
+                    %mean IFR for the first two ISIs
+                    if sp_num_temp >2
+                        IFR_2_ave{ci}(ti,1) = (IFR{ci}(ti,1)+IFR{ci}(ti,2))/2;
+                    else
+                        IFR_2_ave{ci}(ti,1) = 0;
+                    end
                 end %non-empty trace
             end %per trace           
         end 
@@ -876,7 +884,7 @@ if save_results
     cd(fp_fI_analyzed_data)
     save(save_name_fI, 'aDAT_fI','aDAT_rheo','cell_id','cell_id_rheo','cell_stats','adp_index',...
         'adp_index_fl_ind','AP_peak','AP_peak_1st','AP_peak_ave','Cm','curr_inj','delta_isi','raw_h5_files',...
-        'dV_sec','experiment','f_trough','f_trough_ave','IFR','IFR_ave','ISI','lat','MFR','rheobase',...
+        'dV_sec','experiment','f_trough','f_trough_ave','IFR','IFR_ave','IFR_2_ave','ISI','lat','MFR','rheobase',...
         'rheobase_ind','rheobase_sp_num','Rin','spike_count','udratio','udratio_median','udratio_slope',...
         'v_hold','V_th','V_th_1st','V_th_4th','V_th_ave','Vrm','Vm','width','width_1st','width_median','width_slope');
 

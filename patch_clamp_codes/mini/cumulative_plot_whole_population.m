@@ -20,21 +20,21 @@ exp_name = 'WT_Light_Dark_mini_rise_1';
 
 %load grouped mini events
 cd(strcat(fp_all_mini_group, sub))
-load(strcat(exp_name,'.mat'))
+load(strcat(exp_name,'_2024','.mat'))
 
 %where to save the analyzed cumulative data
 fp_cumu = ...,
     '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/cumulative_data/cumulative_stats/';
 
 %name of the saved cumulative data
-save_file_name = strcat(exp_name, '_cumu_stats.mat');
+save_file_name = strcat(exp_name, '_2024','_cumu_stats.mat');
 
 
 %% prepare data
 % choose experimental conditions you want to scale and plot for comparison
 % refer to the exp_con for the order of cell arrays in cumulative
-exp_ind = 2; %DR+CNO %Dark
-ctrl_ind = 1; %CNO %Light
+exp_ind = 1; %DR+CNO %Dark
+ctrl_ind = 2; %CNO %Light
 add_ind = 3; %TTX+GLYX %Dark 6h
 
 %color code (darker analogous purple/blue)
@@ -43,6 +43,13 @@ add_ind = 3; %TTX+GLYX %Dark 6h
 % color{1} = '#63B6FF';
 % color{3} = '#D095DB';
 
+%saline
+% color{2} = '#A3A194'; 
+% color{1} = '#B679F2'; 
+% %xpro
+% color{2} = '#669999'; 
+% color{1} = '#732666';
+
 %Light/Dark color scheme
 color{1} = '#309DD9';
 color{2} = '#8FA4BF';
@@ -50,7 +57,7 @@ color{3} = '#295ABC';
 %%
 
 %amp cutoff (high) (if no cutoff, then h_cut = 0)
-h_cut = 50;
+h_cut = 0;
 
 exp_amps = selected_mini_events{1,exp_ind}(:,1); 
 ctrl_amps = selected_mini_events{1,ctrl_ind}(:,1); 
@@ -64,6 +71,7 @@ if size(exp_amps,1) > size(ctrl_amps,1)
     rand_index = randi([1,size(exp_amps,1)],size(ctrl_amps,1),1);
     exp_amps_final = exp_amps(rand_index);
     ctrl_amps_final = ctrl_amps;
+    add_amps_final = add_amps(rand_index);
     
 elseif size(exp_amps,1) < size(ctrl_amps,1)
     rand_index = randi([1,size(ctrl_amps,1)],size(exp_amps,1),1);
@@ -108,7 +116,7 @@ else
         a_cut_ind = find(add_amps_sort_t>=h_cut,1,'first');
     end
 
-    min_pop = min([c_cut_ind e_cut_ind a_cut_ind]);
+    min_pop = min([c_cut_ind e_cut_ind]);
     exp_amps_sort = exp_amps_sort_t(1:min_pop);
     ctrl_amps_sort = ctrl_amps_sort_t(1:min_pop);
     add_amps_sort = add_amps_sort_t(1:min_pop);
@@ -132,6 +140,7 @@ end
 f = fittype('a*x+b','coefficients',{'a','b'});
 slope_start = (max(exp_amps_sort)-min(exp_amps_sort))/(max(ctrl_amps_sort)-min(ctrl_amps_sort));
 [lnfit,gof] = fit(ctrl_amps_sort,exp_amps_sort,f,'StartPoint',[slope_start 0]);
+
 exp_scaled = (exp_amps_sort-lnfit.b) ./ lnfit.a;
 
 % if isempty(find(exp_scaled_t < 5, 1, 'last'))
@@ -218,9 +227,9 @@ hold off
 %% save files
 if save_results == 1
     cd(strcat(fp_cumu, sub))
-%     save(save_file_name,'exp_amps_sort','ctrl_amps_sort','exp_scaled','cumu_exp_X_scaled','cumu_exp_Y_scaled',...
-%         'h1','p1','ks2stat1','h2','p2','ks2stat2','rand_index')
+    save(save_file_name,'exp_amps_sort','ctrl_amps_sort','exp_scaled','cumu_exp_X_scaled','cumu_exp_Y_scaled',...
+        'h1','p1','ks2stat1','h2','p2','ks2stat2','rand_index')
 
-    save(save_file_name,'exp_amps_sort','ctrl_amps_sort','add_amps_sort','exp_scaled','cumu_exp_X_scaled','cumu_exp_Y_scaled',...
-    'h1','p1','ks2stat1','h2','p2','ks2stat2','p3','p4','rand_index')
+%     save(save_file_name,'exp_amps_sort','ctrl_amps_sort','add_amps_sort','exp_scaled','cumu_exp_X_scaled','cumu_exp_Y_scaled',...
+%     'h1','p1','ks2stat1','h2','p2','ks2stat2','p3','p4','rand_index')
 end

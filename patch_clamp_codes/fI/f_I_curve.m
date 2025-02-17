@@ -8,13 +8,13 @@
 %% Initialization
 
 %location where the mat file will be saved
-fp_analyzed_data = '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/fI_data_by_groups';
+fp_analyzed_data = '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/fI_data_by_groups';
 
 %name of the mat file
 filename = {'fI_WT_Light_Dark_IE_stats.mat'};
 
 %experimental conditions (stats in each column follow this order)
-cond = {'CNO_saline','DR_CNO_saline'};
+cond = {'CNO_xpro','DR_CNO_xpro'};
 
 %functions for calculating stats 
 func = {@mean, @std, @nansem};
@@ -23,7 +23,7 @@ func = {@mean, @std, @nansem};
 fields = {'MFR','IFR','mean_IFR'};
 
 %current steps mode
-curr_mo = 2;
+curr_mo = 1;
 %1- all current steps saved in the "current_inj" vector
 %2- current steps saved under each condition in the "curr_c.curr_inj" field
 
@@ -102,16 +102,20 @@ plot_range = 1:20;
 plot_variable = 'mean_IFR';
 plot_stat = 'ave';
 err = 'sem';
-y_label = 'mean IFR (Hz)';
+y_label = 'IFR (Hz)';
 mksz = 12; %marker size
-figure_window = [500 100 500 400];
+figure_window = [500 100 400 450];
+y_ul = 140;
+x_ul = 420;
 
 %marker/line type
 marker{1} = '-o';
-%marker{2} = '-o';
 marker{2} = '-o';
-marker{3} = ':^';
-marker{4} = ':^';
+marker{3} = '-o';
+marker{4} = '-o';
+% marker{3} = ':^';
+% marker{4} = ':^';
+% marker{5} = ':^';
 
 %color code
 
@@ -120,9 +124,13 @@ marker{4} = ':^';
 % color_edge{2} = '#8FA4BF';
 % color_edge{3} = '#295ABC';
 
-%Light/Dark, CPP/Saline color scheme
-% color_edge{1} = '#BF8C60';
-% color_edge{2} = '#DD6F16';
+%Light, CPP/Saline color scheme
+% color_edge{3} = '#BF8C60';
+% color_edge{4} = '#DD6F16';
+
+%Dark, CPP/Saline color scheme
+% color_edge{1} = '#04D99D';
+% color_edge{2} = '#025940';
 
 % %CT color scheme
 % color_edge{1} = '#000000'; %black
@@ -137,10 +145,10 @@ marker{4} = ':^';
 
 %culture TTX/APV data color scheme
 %darker color transition (still purple)
-% color_edge{1} = '#F8C2D2'; 
-% color_edge{2} = '#573E5C';
-% color_edge{3} = '#913DA2';
-% color_edge{4} = '#7F7CD6'; 
+%color_edge{1} = '#000000'; %NT
+% color_edge{2} = '#D973BE'; %TTX
+%color_edge{2} = '#A64208'; %APV
+% color_edge{4} = '#7F7CD6'; %TTX_APV
 
 % %PhTx/TTX color scheme
 % color_edge{1} = '#000000'; %NT
@@ -173,11 +181,11 @@ marker{4} = ':^';
 
 %xpro, saline, and cpp color scheme
 %saline
-color_edge{1} = '#A3A194'; 
-color_edge{2} = '#B679F2'; 
+% color_edge{1} = '#A3A194'; 
+% color_edge{2} = '#B679F2'; 
 %xpro
-% color_edge{1} = '#669999'; 
-% color_edge{2} = '#732666'; 
+color_edge{1} = '#669999'; 
+color_edge{2} = '#732666'; 
 %cpp
 % color_edge{3} = '#000000';
 % color_edge{4} = '#C95142';
@@ -189,6 +197,7 @@ color_face{2} = 'none';
 
 color_face{3} = 'none';
 color_face{4} = 'none';
+color_face{5} = 'none';
 
 
 curr_y = eval(strcat(plot_stat,'.',plot_variable));
@@ -231,8 +240,8 @@ if plot_on == 1
     ax.XLabel.String = 'Injected Current (pA)';
     ax.YLabel.FontSize = 14;
     ax.YLabel.Interpreter = 'none';
-    ax.XLim = [0 420];
-    ax.YLim = [0 140];
+    ax.XLim = [0 x_ul];
+    ax.YLim = [0 y_ul];
 
     legend(cond{1,:},'FontSize',14,'Location','northwest','Interpreter','none','Box','off')
     %title('Bursting')

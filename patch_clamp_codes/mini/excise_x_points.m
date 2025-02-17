@@ -4,16 +4,19 @@
 %% to be changed for each new run
 
 % specify experiment
-experiment = {'231214'};
+experiment = {'241220'};
 
 %subfolder
 sub = '';
 
+%resample?
+rsample = 0;
+
 % location of mini data
-fp_data = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/mini/';
+fp_data = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/spontaneousFR/';
 
 % location to saved excised coordinates
-fp_excised_pts = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/excised_data/';
+fp_excised_pts = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/excised_data/';
 %% start excising raw data
 
 excised_points = cell(1,numel(experiment));
@@ -50,13 +53,21 @@ for jj = 1:numel(experiment)
                 vals = nonzeros(data{1,ci}(:,trace_id));               
             end
 
-            %clear resampled
-            clear resampled;
-            %resample at 1/2
-            resampled(1:numel(resample(vals,1,2)),1) = resample(vals,1,2); 
-            %resample(x,p,q) resamples the input sequence x at p/q times
-            %the original sample rate
-            %resampled = vals; %remove the downsampling
+            
+
+                %clear resampled
+                clear resampled;
+
+            if rsample == 1
+                %resample at 1/2
+                resampled(1:numel(resample(vals,1,2)),1) = resample(vals,1,2); 
+                %resample(x,p,q) resamples the input sequence x at p/q times
+                %the original sample rate
+                %resampled = vals; %remove the downsampling
+            else
+                resampled = vals;
+            end
+
 
             figure('position',[119 171 1210 611])
             hold on
@@ -170,6 +181,6 @@ result = str2double(result);
 if result == 1
     cd (fp_excised_pts)
        
-    save(excised_filename{1},'data','excised_points','cell_id')
+    save(excised_filename{1},'data','excised_points','cell_id','-v7.3')
 
 end

@@ -19,29 +19,29 @@ rise_cutoff = 'rise_1';
 
 %experiment name (correpsonding to the sheet name in the cell_id_index
 % excel file)
-exp_name = strcat('NT_APV_TTX_GLYX_',rise_cutoff);
+exp_name = strcat('WT_Light_Dark_mini_',rise_cutoff);
 
 %file name
-saved_file_name = 'NT_APV_TTX_GLYX_24h.mat';
+saved_file_name = 'WT_Light_Dark_mini_2024.mat';
 
 %where to save grouped files
 fp_grouped_data = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/mini_data_by_groups';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/mini_data_by_groups';
 
 %experimental conditions
-exp_con = {'NT','APV','TTX','TTX_GLYX'};
+exp_con = {'Dark','Light_6h','Dark_6h'};
 
 %import cell_id_index table 
-cd('/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/mini_data_by_groups')
+cd('/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/mini_data_by_groups')
 cell_id_index = readtable('cell_id_index.xlsx','Sheet',exp_name);
 
 %location of analyzed mini results
 fp_analyzed_mini = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/analyzed_mini_results/';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_mini_results/';
 
 %location of waveform average kinetics results
 fp_wavg_kinetics = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/waveform_average_kinetics/';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/waveform_average_kinetics/';
 
 %% extract and group parameters from analyzed mini files
 data_struct_temp = cell(1,numel(exp_con));
@@ -202,10 +202,10 @@ end
 
 
 %% CHANGE FOR EACH EXPERIMENT BEFORE SAVING
-NT = data_struct_temp{1,1};
-APV = data_struct_temp{1,2};
-TTX = data_struct_temp{1,3};
-TTX_GLYX = data_struct_temp{1,4};
+Dark = data_struct_temp{1,1};
+Light_6h = data_struct_temp{1,2};
+Dark_6h = data_struct_temp{1,3};
+% TTX_GLYX = data_struct_temp{1,4};
 
 if save_results == 1
     

@@ -1,24 +1,24 @@
 %% import mat files, areas of each variable stored under each experimental condition
 
 %location where the mat file will be saved
-fp_analyzed_data = '/Users/wwneuro/My_Drive/Lab/Data_analysis/chronic_DREADDs/chronic_hm4di/area_under_curve_fI';
+fp_analyzed_data = '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/area_under_curve';
 
 %name of the saved file
-filename = 'Area_Under_Curve_fI_wt_cp_xpro_saline_pooled_ctrl.mat';
+filename = 'Area_Under_Curve_fI_WT_Light_Dark_IE.mat';
 
 %save results
 save_file = 1;
 
 % names of experimental conditions within the analyzed fI mat file
-condn = {'CNO_saline','DR_CNO_saline'};
+condn = {'Dark','Light_6h','Dark_6h'};
 %field names
 fn = {'MFR', 'IFR', 'mean_IFR'}; 
 
 %number of traces
-cti = 20;
+cti = 15;
 
 %current steps mode
-curr_mo = 1;
+curr_mo = 2;
 %1- all current steps saved in the "current_inj" vector
 %2- current steps saved under each condition in the "curr_c.curr_inj" field
 
@@ -67,8 +67,9 @@ end
 % TTX_24h_area = dst{3};
 % PhTX_TTX_24h_area = dst{4};
 %sTNFR_TTX_6h_area = dst{4};
-CNO_saline_area = dst{1};
-DR_CNO_saline_area = dst{2};
+Dark_area = dst{1};
+Light_6h_area = dst{2};
+Dark_6h_area = dst{3};
 %% save file
 if save_file == 1
     cd(fp_analyzed_data)

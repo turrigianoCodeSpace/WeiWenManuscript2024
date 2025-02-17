@@ -26,7 +26,7 @@ fp_kinetics = ...,
     '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/waveform_average_kinetics/';
 
 %%%%%plotting settings
-figure_on = 1;
+figure_on = 0;
 
 %%%%save results
 save_results = 1;

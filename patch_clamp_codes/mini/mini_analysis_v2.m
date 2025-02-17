@@ -30,24 +30,24 @@
 %% Experiment names and folder pathes
 
 %Name of the data folder
-experiment = {'230723'};
+experiment = {'231214'};
 
 %Name of the subfolder (if applicable)
 sub = '';
 
 %location of the excised file
-excised_data_fp = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/excised_data/';
+excised_data_fp = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/excised_data/';
 
 %Filepath where you keep data folders
-fp_data = '/Users/wwneuro/My_Drive/Lab/Data/culture_experiments/mini/';
+fp_data = '/Users/wwneuro/My_Drive/Lab/Data/slice_NT/mini/';
 
 %location to save the analyzed mini data
 fp_analyzed_data = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/analyzed_mini_results/';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_mini_results/';
 
 %location to save the analyzed passive property data
 fp_pp = ...,
-    '/Users/wwneuro/My_Drive/Lab/Data_analysis/culture_experiments/analyzed_seal_test/';
+    '/Users/wwneuro/My_Drive/Lab/Data_analysis/slice_NT/analyzed_seal_test/';
 
 %% save and plotting settings
 
@@ -119,7 +119,7 @@ detect_crit_thresh = 0.10;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% EXCLUSION CRITERIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-amp_cutoff_low = 5;
+amp_cutoff_low = 5;%5;
 amp_cutoff_high = 120;
 %%%%%% (pA) Value range of acceptable events amplitudes
 
@@ -162,7 +162,7 @@ max_decay_rmse = 3;%2.5;
 %%%%%% decay (exclude if higher)
 
 if cur_type == 1
-    risetime_cutoff = 2;
+    risetime_cutoff = 1.01;
     BLBAD_thresh = 5.0;
     S_E_L = 180;
 elseif cur_type == 2
@@ -774,6 +774,8 @@ for jj = 1:1%numel(experiment)
                                     DECAY_TIME(i) = NaN;
                                     continue
                                 end
+
+
                             else
                                 decay_i = NaN;
                             end
@@ -781,7 +783,7 @@ for jj = 1:1%numel(experiment)
                             decay_ind(i) = decay_i;
 
                             %single-exp fitting of decay
-                            if ~isnan(sm_pk_ind(i)) 
+                            if ~isnan(sm_pk_ind(i))
                                 decay_vals_forfit = smooth(decay_vals_forfit);
                                 [exp_fit,gof] = fit((0:0.2:0.2*num_pts_decay_fit)',decay_vals_forfit,f);
 

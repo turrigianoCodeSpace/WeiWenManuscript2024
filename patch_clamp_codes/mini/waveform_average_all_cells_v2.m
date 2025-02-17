@@ -123,12 +123,19 @@ end
 %Light/Dark color scheme
 color1 = '#309DD9';
 color2 = '#8FA4BF';
-%color3 = '#295ABC';
+color3 = '#295ABC';
+
+%saline
+% color2 = '#A3A194'; 
+% color1 = '#B679F2'; 
+%xpro
+% color2 = '#669999'; 
+% color1 = '#732666';
 
 %define conditions
 condition1 = all_meta_wavg{1,1};
 condition2 = all_meta_wavg{1,2};
-%condition3 = all_meta_wavg{1,3};
+condition3 = all_meta_wavg{1,3};
 
 [peak_cond1, peak_ind_cond1] = min(condition1);
 [peak_cond2, peak_ind_cond2] = min(condition2);
@@ -158,7 +165,7 @@ if figure_on_unscaled == 1
     figure();
     plot(condition1(plot_range),'Color',color1,'LineWidth',4)
     hold on
-    %plot(condition3(plot_range),'Color',color3,'LineWidth',4)   
+    plot(condition3(plot_range),'Color',color3,'LineWidth',4)   
     plot(condition2(plot_range),'Color',color2,'LineWidth',4)
     %hold on
     %plot(meta_ave.DR_CNO_24(20:110),'Color',[0.27 0.51 0.71],'LineWidth',4)
@@ -194,5 +201,5 @@ end
 
 if save_results == 1
     cd(strcat(fp_wa_group, sub))
-    save(strcat(exp_name,'.mat'),'all_wavg','all_meta_wavg','scale_factor','exp_con')
+    save(strcat(exp_name,'_2024','.mat'),'all_wavg','all_meta_wavg','scale_factor','exp_con')
 end
